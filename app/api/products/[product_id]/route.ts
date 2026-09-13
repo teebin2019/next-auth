@@ -1,12 +1,12 @@
 import { connect } from "@/lib/mysql_connect";
 
 interface Product {
-  product_id: number;
+  product_id: string;
 }
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ product_id: number }> },
+  { params }: { params: Promise<{ product_id: string }> },
 ) {
   try {
     const { product_id } = await params;
@@ -34,7 +34,7 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  { params }: { params: Promise<{ product_id: number }> },
+  { params }: { params: Promise<{ product_id: string }> },
 ) {
   try {
     const { product_id } = await params;
@@ -61,7 +61,7 @@ export async function PUT(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ product_id: number }> },
+  { params }: { params: Promise<{ product_id: string }> },
 ) {
   try {
     const { product_id } = await params;
