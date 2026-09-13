@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     console.error("Error during registration:", error);
     return Response.json(
       {
-        message: "เกิดข้อผิดพลาดในการสมัครสมาชิก",
+        message: "เกิดข้อผิดพลาดในการหาค่าซ้ำ",
       },
       { status: 500 },
     );

@@ -1,11 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 function Sidebar() {
   const [toggle, setToggle] = useState(false);
   const { data: session } = useSession();
 
-  console.log(session);
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
 
   return (
     <>
