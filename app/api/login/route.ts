@@ -29,7 +29,10 @@ export async function POST(req: Request) {
 
     return Response.json({
       message: "เข้าสู่ระบบสำเร็จ",
-      user,
+      user: {
+        email: user.email,
+        name: user.first_name + " " + user.last_name,
+      },
     });
   } catch (error) {
     console.error("Error during login:", error);
