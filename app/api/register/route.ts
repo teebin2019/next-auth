@@ -1,17 +1,18 @@
 import { connect } from "@/lib/mysql_connect";
+import { hash } from "bcrypt-ts";
 
 export async function POST(req: Request) {
   try {
     const { firstName, lastName, email, password } = await req.json();
+    const hash_password = await hash(password, 10);
 
     await connect.query(
       "INSERT INTO users (first_name , last_name , email , password , created_at) VALUES ( ? , ? , ? , ? , ?)",
-      [firstName, lastName, email, password, new Date()],
+      [firstName, lastName, email, hash_password, new Date()],
     );
 
     return Response.json({
       message: "สมัครสมาชิกสำเร็จ",
-      res: { firstName, lastName, email, password },
     });
   } catch (error) {
     console.error("Error during registration:", error);
