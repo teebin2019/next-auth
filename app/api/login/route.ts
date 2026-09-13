@@ -1,6 +1,8 @@
 import { connect } from "@/lib/mysql_connect";
 
 interface User {
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
 }
@@ -10,7 +12,7 @@ export async function POST(req: Request) {
     const { email, password } = await req.json();
 
     const [rows] = (await connect.query(
-      "SELECT email FROM users WHERE email = ? AND password = ?",
+      "SELECT first_name , last_name , email FROM users WHERE email = ? AND password = ?",
       [email, password],
     )) as [User[], any];
 

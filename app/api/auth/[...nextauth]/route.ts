@@ -6,8 +6,9 @@ const handler = NextAuth({
     CredentialsProvider({
       name: "credentials",
       credentials: {},
-      async authorize(credentials, req) {
-        const res = await fetch("http://localhost:3000/api/login", {
+      async authorize(credentials) {
+        const BASE_URL = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+        const res = await fetch(BASE_URL + "/api/login", {
           method: "POST",
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
@@ -25,6 +26,17 @@ const handler = NextAuth({
       },
     }),
   ],
+  session: {
+    strategy: "jwt",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/",
+    signOut: "/auth/signout",
+    error: "/auth/error",
+    verifyRequest: "/auth/verify-request",
+    newUser: "/auth/new-user",
+  },
 });
 
 export { handler as GET, handler as POST };
