@@ -18,7 +18,7 @@ function RegisterPage() {
       return;
     }
     try {
-      const userRes = await fetch("/api/configUser", {
+      const userRes = await fetch("/api/checkUser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

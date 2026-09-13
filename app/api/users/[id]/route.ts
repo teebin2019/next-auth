@@ -40,8 +40,8 @@ export async function PUT(
     const { first_name, last_name } = await req.json();
 
     await connect.query(
-      "UPDATE users SET first_name = ? , last_name = ? WHERE id = ? ",
-      [first_name, last_name, id],
+      "UPDATE users SET first_name = ? , last_name = ? , updated_at = ? WHERE id = ? ",
+      [first_name, last_name, new Date(), id],
     );
 
     return Response.json({
