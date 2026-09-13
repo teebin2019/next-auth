@@ -1,23 +1,33 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log("Email : ", email);
-      console.log("Password : ", password);
-      setError(false);
-      setSuccess(true);
-    } catch (error) {
-      console.error("Error during login:", error);
-      setError(true);
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (!res?.ok) {
+        alert("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+        return;
+      }
+      alert("เข้าสู่ระบบสำเร็จ");
+      router.push("/dashboard");
+      router.refresh();
+    } catch (err) {
+      console.log("Error Auth :", err);
+      alert("เกิดข้อผิดพลาด");
     }
   };
 
@@ -25,47 +35,6 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div
-              className="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-              role="alert"
-            >
-              <svg
-                className="shrink-0 inline w-4 h-4 me-3"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-              </svg>
-              <span className="sr-only">Info</span>
-              <div>
-                <span className="font-medium">คำเตือน!</span> เกิดข้อผิดพลาด
-              </div>
-            </div>
-          )}
-
-          {success && (
-            <div
-              className="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-              role="alert"
-            >
-              <svg
-                className="shrink-0 inline w-4 h-4 me-3"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-              </svg>
-              <span className="sr-only">Info</span>
-              <div>
-                <span className="font-medium">สำเร็จ!</span> ดำเนินการสำเร็จ
-              </div>
-            </div>
-          )}
           <h5 className="text-xl font-medium text-gray-900 dark:text-white">
             ลงทะเบียนเข้าสู่ระบบ
           </h5>
