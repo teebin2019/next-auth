@@ -8,8 +8,20 @@ interface Product {
   product_id: number;
   product_name: string;
   created_at: string;
-  updated_at: string;
+  updated_at: string | null;
 }
+
+const formatDate = (date: string | null) => {
+  if (!date) return "-";
+
+  return new Date(date).toLocaleString("th-TH", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
 
 function ProductPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -86,8 +98,10 @@ function ProductPage() {
                       {idx + 1}
                     </th>
                     <td className="px-6 py-4">{item.product_name}</td>
-                    <td className="px-6 py-4">{item.created_at}</td>
-                    <td className="px-6 py-4">{item.updated_at ?? "-"}</td>
+                    <td className="px-6 py-4">{formatDate(item.created_at)}</td>
+                    <td className="px-6 py-4">
+                      {formatDate(item.updated_at) ?? "-"}
+                    </td>
                     <td className="px-6 py-4 text-left ">
                       <Link
                         href={"/products/" + item.product_id + "/edit"}
